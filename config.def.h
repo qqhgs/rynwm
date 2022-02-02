@@ -77,6 +77,8 @@ static Key keys[] = {
 	{ 0,                            XK_Print,  spawn,          SHCMD("scrot /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY,                       XK_Print,  spawn,          SHCMD("scrot -u /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY|ShiftMask,             XK_Print,  spawn,          SHCMD("scrot -s /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
+	{ MODKEY,                       XK_g,      shiftview,      {.i = -1 } },
+	{ MODKEY,                       XK_semicolon, shiftview,   {.i = 1 } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
