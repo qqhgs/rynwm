@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -77,8 +77,10 @@ static Key keys[] = {
 	{ 0,                            XK_Print,  spawn,          SHCMD("scrot /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY,                       XK_Print,  spawn,          SHCMD("scrot -u /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY|ShiftMask,             XK_Print,  spawn,          SHCMD("scrot -s /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
-	{ MODKEY,                       XK_g,      shiftview,      {.i = -1 } },
-	{ MODKEY,                       XK_semicolon, shiftview,   {.i = 1 } },
+
+	{ MODKEY,                       XK_g,      			shiftview,      {.i = -1 } },
+	{ MODKEY,                       XK_semicolon, 	shiftview,   		{.i = 1 } },
+
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -100,6 +102,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+
+	{ MODKEY,             					XK_minus,		setborderpx,    {.i = -1 } },
+	{ MODKEY|ShiftMask,							XK_p, 	   	setborderpx,    {.i = +1 } },
+	{ MODKEY,             					XK_equal,  	setborderpx,    {.i = borderpx } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
