@@ -164,6 +164,7 @@ struct Monitor {
   unsigned int colorfultag;
   unsigned int colorfultitle;
 	int showtitle;
+	int showvacanttags;
 	int showbar;
 	int topbar;
 	Client *clients;
@@ -267,8 +268,9 @@ static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
-static void togglecolorfultitle();
-static void togglecolorfultag();
+static void toggletitlecolor();
+static void toggletagcolor();
+static void togglevacanttag(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglefullscr(const Arg *arg);
 static void toggletag(const Arg *arg);
@@ -494,7 +496,7 @@ attachstack(Client *c)
 void
 buttonpress(XEvent *e)
 {
-	unsigned int i, x, click;
+	unsigned int i, x, click, occ = 0;
 	Arg arg = {0};
 	Client *c;
 	Monitor *m;
@@ -509,9 +511,14 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
 		i = x = 0;
-		do
+		for (c = m->clients; c; c = c->next)
+			occ |= c->tags == 255 ? 0 : c->tags;
+		do {
+			/* do not reserve space for vacant tags */
+			if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+				continue;
 			x += TEXTW(tags[i]);
-		while (ev->x >= x && ++i < LENGTH(tags));
+		} while (ev->x >= x && ++i < LENGTH(tags));
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
@@ -772,6 +779,7 @@ createmon(void)
 	m->nmaster = nmaster;
 	m->showbar = showbar;
   m->showtitle = showtitle ? showtitle : 0;
+	m->showvacanttags = showvacanttags ? showvacanttags : 0;
   m->colorfultag = colorfultag ? colorfultag : 0;
   m->colorfultitle = colorfultitle ? colorfultitle : 0;
 	m->topbar = topbar;
@@ -982,12 +990,16 @@ drawbar(Monitor *m)
 
 	resizebarwin(m);
 	for (c = m->clients; c; c = c->next) {
-		occ |= c->tags;
+		occ |= c->tags == 255 ? 0 : c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
+		/* do not draw vacant tags */
+		if (!m->showvacanttags && !(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+			continue;
+
 		w = TEXTW(tags[i]);
     drw_setscheme(drw, scheme[occ & 1 << i ? (m->colorfultag ? tagschemes[i] : SchemeSel) : SchemeTag]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
@@ -2132,15 +2144,23 @@ togglebar(const Arg *arg)
 	arrange(selmon);
 }
 
+
 void
-togglecolorfultitle()
+togglevacanttag(const Arg *arg)
+{
+	selmon->showvacanttags = !selmon->showvacanttags;
+	drawbar(selmon);
+}
+
+void
+toggletitlecolor()
 {
 	selmon->colorfultitle = !selmon->colorfultitle;
 	drawbar(selmon);
 }
 
 void
-togglecolorfultag()
+toggletagcolor()
 {
 	selmon->colorfultag = !selmon->colorfultag;
 	drawbar(selmon);
