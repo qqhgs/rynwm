@@ -81,6 +81,13 @@ enum {
   SchemeTag3,
   SchemeTag4,
   SchemeTag5,
+  SchemeTitle,
+  SchemeTitleFloat,
+  SchemeTitle1,
+  SchemeTitle2,
+  SchemeTitle3,
+  SchemeTitle4,
+  SchemeTitle5,
   SchemeLayout,
 }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
@@ -155,6 +162,8 @@ struct Monitor {
 	unsigned int sellt;
 	unsigned int tagset[2];
   unsigned int colorfultag;
+  unsigned int colorfultitle;
+	int showtitle;
 	int showbar;
 	int topbar;
 	Client *clients;
@@ -760,7 +769,9 @@ createmon(void)
 	m->mfact = mfact;
 	m->nmaster = nmaster;
 	m->showbar = showbar;
+  m->showtitle = showtitle ? showtitle : 0;
   m->colorfultag = colorfultag ? colorfultag : 0;
+  m->colorfultitle = colorfultitle ? colorfultitle : 0;
 	m->topbar = topbar;
 	m->gappih = gappih;
 	m->gappiv = gappiv;
@@ -951,8 +962,8 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, tw = 0, stw = 0;
-	// int boxs = drw->fonts->h / 9;
-	// int boxw = drw->fonts->h / 6 + 2;
+	int boxs = drw->fonts->h / 9;
+	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
@@ -976,7 +987,11 @@ drawbar(Monitor *m)
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
-    drw_setscheme(drw, scheme[occ & 1 << i ? (m->colorfultag ? tagschemes[i] : SchemeSel) : SchemeTag]);
+    // drw_setscheme(drw, scheme[occ & 1 << i ? (m->colorfultag ? tagschemes[i] : SchemeSel) : SchemeTag]);
+		if (selmon->colorfultag)
+			drw_setscheme( drw, scheme[occ & 1 << i ? tagschemes[i] : SchemeTag]);
+		else
+			drw_setscheme( drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeTag]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
     if (ulineall || m->tagset[m->seltags] & 1 << i) /* if there are conflicts, just move these lines directly underneath both 'drw_setscheme' and 'drw_text' :) */
         drw_rect(drw, x + ulinepad, bh - ulinestroke - ulinevoffset, w - (ulinepad * 2), ulinestroke, 1, 0);
@@ -987,8 +1002,24 @@ drawbar(Monitor *m)
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	if ((w = m->ww - tw - stw - x) > bh) {
+		if (m->sel) {
+			if (m->showtitle) {
+			if (selmon->colorfultitle) {
+				for (i = 0; i < LENGTH(tags); i++)
+					if (selmon->sel->tags & 1 << i)
+						drw_setscheme( drw, scheme[titleschemes[i]]);
+			} else {
+				int s = (m == selmon) && m->sel->isfloating ? SchemeTitleFloat : SchemeTitle;
+				drw_setscheme(drw, scheme[s]);
+			}
+			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+			if (m->sel->isfloating)
+				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+			}
+		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);
+		}
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww - stw, bh);
 }

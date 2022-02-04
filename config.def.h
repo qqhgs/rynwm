@@ -20,7 +20,9 @@ static const int vertpadbar         = 11;        /* vertical padding for statusb
 static const char *fonts[]          = { "JetBrainsMono NFR:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 
-static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected tag */
+static const int showtitle          = 1;        /* 0 means no title */
+static const unsigned int colorfultitle 	= 1; /* 0 means title use SchemeTitle and SchemeTitleFloat */
+static const unsigned int colorfultag    	= 1;  /* 0 means use SchemeSel for selected tag */
 
 // theme
 #include "themes/catppuccin.h"
@@ -28,13 +30,20 @@ static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for sele
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
     [SchemeNorm]       = { gray3, black, gray2 },
-    [SchemeSel]        = { gray4, blue,  blue  },
+    [SchemeSel]        = { gray3, black,  blue  },
     [SchemeTag]        = { gray3, black, black },
     [SchemeTag1]       = { blue,  black, black },
     [SchemeTag2]       = { red,   black, black },
     [SchemeTag3]       = { orange, black,black },
     [SchemeTag4]       = { green, black, black },
     [SchemeTag5]       = { pink,  black, black },
+    [SchemeTitle]        = { gray3, black, black },
+    [SchemeTitleFloat]   = { red, black, black },
+    [SchemeTitle1]       = { blue,  black, black },
+    [SchemeTitle2]       = { red,   black, black },
+    [SchemeTitle3]       = { orange, black,black },
+    [SchemeTitle4]       = { green, black, black },
+    [SchemeTitle5]       = { pink,  black, black },
     [SchemeLayout]     = { green, black, black }, 
 };
 
@@ -42,6 +51,7 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "", "", "", "", "" };
 
 static const int tagschemes[] = { SchemeTag1, SchemeTag2, SchemeTag3, SchemeTag4, SchemeTag5 };
+static const int titleschemes[] = { SchemeTitle1, SchemeTitle2, SchemeTitle3, SchemeTitle4, SchemeTitle5 };
 
 static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke	= 2;	/* thickness / height of the underline */
