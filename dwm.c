@@ -267,6 +267,8 @@ static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
+static void togglecolorfultitle();
+static void togglecolorfultag();
 static void togglefloating(const Arg *arg);
 static void togglefullscr(const Arg *arg);
 static void toggletag(const Arg *arg);
@@ -2132,6 +2134,20 @@ togglebar(const Arg *arg)
 		XConfigureWindow(dpy, systray->win, CWY, &wc);
 	}
 	arrange(selmon);
+}
+
+void
+togglecolorfultitle()
+{
+	selmon->colorfultitle = !selmon->colorfultitle;
+	drawbar(selmon);
+}
+
+void
+togglecolorfultag()
+{
+	selmon->colorfultag = !selmon->colorfultag;
+	drawbar(selmon);
 }
 
 void
