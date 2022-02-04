@@ -7,20 +7,34 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrainsMono NFR:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#2E3440";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#abb2bf";
-static const char col_gray4[]       = "#6d8dad";
-static const char col_cyan[]        = "#81A1C1";
-static const char col_bg2[]         = "#3b414d";
+
+static const unsigned int colorfultag    = 1;  /* 0 means use SchemeSel for selected tag */
+
+// theme
+#include "themes/catppuccin.h"
+
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_bg2,  col_cyan  },
+    /*               fg         bg         border   */
+    [SchemeNorm]       = { gray3, black, gray2 },
+    [SchemeSel]        = { gray4, blue,  blue  },
+    [SchemeTag]        = { gray3, black, black },
+    [SchemeTag1]       = { blue,  black, black },
+    [SchemeTag2]       = { red,   black, black },
+    [SchemeTag3]       = { orange, black,black },
+    [SchemeTag4]       = { green, black, black },
+    [SchemeTag5]       = { pink,  black, black },
+    [SchemeLayout]     = { green, black, black }, 
 };
 
 /* tagging */
 static const char *tags[] = { "", "", "", "", "" };
+
+static const int tagschemes[] = { SchemeTag1, SchemeTag2, SchemeTag3, SchemeTag4, SchemeTag5 };
+
+static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 2;	/* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
+static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -60,8 +74,6 @@ static const Layout layouts[] = {
 #include <X11/XF86keysym.h>
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *rofirun[]  = { "rofi", "-show", "drun", NULL };
 
