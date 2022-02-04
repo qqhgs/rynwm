@@ -161,6 +161,7 @@ struct Monitor {
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
+	int centertitle;
   unsigned int colorfultag;
   unsigned int colorfultitle;
 	int showtitle;
@@ -270,6 +271,7 @@ static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void toggletitle(const Arg *arg);
 static void toggletitlecolor();
+static void toggletitlepos(const Arg *arg);
 static void toggletagcolor();
 static void togglevacanttag(const Arg *arg);
 static void togglefloating(const Arg *arg);
@@ -781,6 +783,7 @@ createmon(void)
 	m->showbar = showbar;
   m->showtitle = showtitle ? showtitle : 0;
 	m->showvacanttags = showvacanttags ? showvacanttags : 0;
+	m->centertitle = centertitle ? centertitle : 0;
   m->colorfultag = colorfultag ? colorfultag : 0;
   m->colorfultitle = colorfultitle ? colorfultitle : 0;
 	m->topbar = topbar;
@@ -972,7 +975,9 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 void
 drawbar(Monitor *m)
 {
-	int x, w, tw = 0, stw = 0;
+	int x, w, y = borderpx, tw = 0, stw = 0, sp = 0;
+	int h = bh - y * 2;
+	int titlepad = lrpad / 2;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -1022,9 +1027,16 @@ drawbar(Monitor *m)
 				int s = (m == selmon) && m->sel->isfloating ? SchemeTitleFloat : SchemeTitle;
 				drw_setscheme(drw, scheme[s]);
 			}
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+			if (m->centertitle) {
+				int width = w - 2 * sp;
+				int txtwidth = (int)(TEXTW(m->sel->name))
+					- (lrpad + (2 * sp));
+				int centerpad = (width - txtwidth) / 2;
+				titlepad = centerpad >= lrpad / 2 ? centerpad - sp : (lrpad / 2) + ((2 * sp) / 2);
+			}
+			drw_text(drw, x, y, w - 2 * sp, h, titlepad, m->sel->name, 0);
 			if (m->sel->isfloating)
-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+				drw_rect(drw, x + boxs + titlepad - lrpad / 2, boxs, boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);
@@ -2144,6 +2156,13 @@ togglebar(const Arg *arg)
 }
 
 void
+togglevacanttag(const Arg *arg)
+{
+	selmon->showvacanttags = !selmon->showvacanttags;
+	drawbar(selmon);
+}
+
+void
 toggletitle(const Arg *arg)
 {
         selmon->showtitle = !selmon->showtitle;
@@ -2152,17 +2171,17 @@ toggletitle(const Arg *arg)
 }
 
 void
-togglevacanttag(const Arg *arg)
-{
-	selmon->showvacanttags = !selmon->showvacanttags;
-	drawbar(selmon);
-}
-
-void
 toggletitlecolor()
 {
 	selmon->colorfultitle = !selmon->colorfultitle;
 	drawbar(selmon);
+}
+
+void
+toggletitlepos(const Arg *arg)
+{
+        selmon->centertitle = !selmon->centertitle;
+        drawbar(selmon);
 }
 
 void

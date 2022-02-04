@@ -20,6 +20,7 @@ static const int vertpadbar         = 11;        /* vertical padding for statusb
 static const char *fonts[]          = { "JetBrainsMono NFR:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 
+static const int centertitle        = 1;	/* 0 means no title */
 static const int showtitle          = 1;	/* 0 means no title */
 static const int showvacanttags     = 0;  /* 0 means hide vacant tags */
 static const unsigned int colorfultitle 	= 1; /* 0 means title use SchemeTitle and SchemeTitleFloat */
@@ -137,6 +138,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,  						XK_v,      togglevacanttag,  {0} },
 	{ MODKEY|ControlMask,           XK_t,      toggletitle, {0} },
 	{ MODKEY|ControlMask,           XK_n,      toggletitlecolor, {0} },
+	{ MODKEY|ControlMask,           XK_p,      toggletitlepos, {0} },
 
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
