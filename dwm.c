@@ -268,6 +268,7 @@ static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
+static void toggletitle(const Arg *arg);
 static void toggletitlecolor();
 static void toggletagcolor();
 static void togglevacanttag(const Arg *arg);
@@ -1012,8 +1013,7 @@ drawbar(Monitor *m)
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	if ((w = m->ww - tw - stw - x) > bh) {
-		if (m->sel) {
-			if (m->showtitle) {
+		if (m->sel && m->showtitle) {
 			if (selmon->colorfultitle) {
 				for (i = 0; i < LENGTH(tags); i++)
 					if (selmon->sel->tags & 1 << i)
@@ -1025,7 +1025,6 @@ drawbar(Monitor *m)
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-			}
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);
@@ -2144,6 +2143,13 @@ togglebar(const Arg *arg)
 	arrange(selmon);
 }
 
+void
+toggletitle(const Arg *arg)
+{
+        selmon->showtitle = !selmon->showtitle;
+        focus(NULL);
+        drawbar(selmon);
+}
 
 void
 togglevacanttag(const Arg *arg)

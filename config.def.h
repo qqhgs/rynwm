@@ -135,7 +135,8 @@ static Key keys[] = {
 
 	{ MODKEY|ShiftMask,          		XK_n,      toggletagcolor,   {0} },
 	{ MODKEY|ShiftMask,  						XK_v,      togglevacanttag,  {0} },
-	{ MODKEY|ControlMask,           XK_t,      toggletitlecolor, {0} },
+	{ MODKEY|ControlMask,           XK_t,      toggletitle, {0} },
+	{ MODKEY|ControlMask,           XK_n,      toggletitlecolor, {0} },
 
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
