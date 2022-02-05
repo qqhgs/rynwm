@@ -22,7 +22,7 @@ static const char dmenufont[]       = "monospace:size=10";
 
 static const int centertitle        = 1;	/* 0 means no title */
 static const int showtitle          = 1;	/* 0 means no title */
-static const int showvacanttags     = 0;  /* 0 means hide vacant tags */
+static const int showvacanttags     = 1;  /* 0 means hide vacant tags */
 static const unsigned int colorfultitle 	= 1; /* 0 means title use SchemeTitle and SchemeTitleFloat */
 static const unsigned int colorfultag    	= 1;  /* 0 means use SchemeSel for selected tag */
 
