@@ -15,9 +15,9 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int horizpadbar        = 5;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 11;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "JetBrainsMono NFR:size=10" };
+static const int horizpadbar        = 6;        /* horizontal padding for statusbar */
+static const int vertpadbar         = 12;        /* vertical padding for statusbar */
+static const char *fonts[]          = { "JetBrainsMono NFR:size=10", "Material Design Icons:size=10"};
 static const char dmenufont[]       = "monospace:size=10";
 
 static const int centertitle        = 1;	/* 0 means no title */
@@ -50,12 +50,12 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "" };
+static const char *tags[] = { "󰽢", "󰽢", "󰽢", "󰽢", "󰽢" };
 
 static const int tagschemes[] = { SchemeTag1, SchemeTag2, SchemeTag3, SchemeTag4, SchemeTag5 };
 static const int titleschemes[] = { SchemeTitle1, SchemeTitle2, SchemeTitle3, SchemeTitle4, SchemeTitle5 };
 
-static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinepad	= 6;	/* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke	= 2;	/* thickness / height of the underline */
 static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
 static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
