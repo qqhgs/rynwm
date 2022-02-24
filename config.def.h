@@ -124,9 +124,9 @@ static Key keys[] = {
 
 	{ 0,                            XF86XK_MonBrightnessUp,    spawn,          SHCMD("xbacklight -inc 5") },
 	{ 0,                            XF86XK_MonBrightnessDown,  spawn,          SHCMD("xbacklight -dec 5") },
-	{ 0,                            XF86XK_AudioMute,          spawn,          SHCMD("pamixer -t") },
-	{ 0,                            XF86XK_AudioLowerVolume,   spawn,          SHCMD("pamixer -d 5") },
-	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          SHCMD("pamixer -i 5") },
+	{ 0,                            XF86XK_AudioMute,          spawn,          SHCMD("amixer sset Master toggle") },
+	{ 0,                            XF86XK_AudioLowerVolume,   spawn,          SHCMD("amixer sset Master 2%-") },
+	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          SHCMD("amixer sset Master 2%+") },
 	{ 0,                            XK_Print,  spawn,          SHCMD("scrot /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY,                       XK_Print,  spawn,          SHCMD("scrot -u /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY|ShiftMask,             XK_Print,  spawn,          SHCMD("scrot -s /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
