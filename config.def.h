@@ -18,7 +18,6 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 6;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 12;        /* vertical padding for statusbar */
 static const char *fonts[]          = { "JetBrainsMono NFR:size=10", "Material Design Icons:size=10"};
-static const char dmenufont[]       = "monospace:size=10";
 
 static const int centertitle        = 1;	/* 0 means no title */
 static const int showtitle          = 1;	/* 0 means no title */
@@ -114,19 +113,28 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", NULL };
 static const char *rofirun[]  = { "rofi", "-show", "drun", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = rofirun } },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_p, 		 spawn,          SHCMD("eww_launcher") },
+	{ MODKEY,             					XK_e, 		 spawn,          SHCMD("eww_launcher") },
 
 	{ 0,                            XF86XK_MonBrightnessUp,    spawn,          SHCMD("xbacklight -inc 5") },
 	{ 0,                            XF86XK_MonBrightnessDown,  spawn,          SHCMD("xbacklight -dec 5") },
+
 	{ 0,                            XF86XK_AudioMute,          spawn,          SHCMD("amixer sset Master toggle") },
 	{ 0,                            XF86XK_AudioLowerVolume,   spawn,          SHCMD("amixer sset Master 2%-") },
 	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          SHCMD("amixer sset Master 2%+") },
+
+	{ 0,                            XF86XK_AudioPlay,          spawn,          SHCMD("mpd || mpc -q toggle") },
+	{ 0,                            XF86XK_AudioStop,          spawn,          SHCMD("mpc stop") },
+	{ 0,                            XF86XK_AudioPrev,          spawn,          SHCMD("mpc -q prev") },
+	{ 0,                            XF86XK_AudioNext,          spawn,          SHCMD("mpc -q next") },
+
 	{ 0,                            XK_Print,  spawn,          SHCMD("scrot /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY,                       XK_Print,  spawn,          SHCMD("scrot -u /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
 	{ MODKEY|ShiftMask,             XK_Print,  spawn,          SHCMD("scrot -s /home/ryn/Pictures/screenshots/%Y-%m-%d-%H:%M:%S_$wx$h.png") },
@@ -167,7 +175,7 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,              XK_9,      incrovgaps,     {.i = +1 } },
 	{ MODKEY|ControlMask|ShiftMask,    XK_9,      incrovgaps,     {.i = -1 } },
 	{ MODKEY|ControlMask,              XK_0,      togglegaps,     {0} },
-	{ MODKEY|ControlMask|ShiftMask,    XK_0,      defaultgaps,    {0} },
+	{ MODKEY|ControlMask|ShiftMask,    XK_d,      defaultgaps,    {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,             					XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
